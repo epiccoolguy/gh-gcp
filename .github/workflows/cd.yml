@@ -1,0 +1,46 @@
+name: CD
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Log in to Google Cloud Platform
+        uses: "google-github-actions/auth@v2"
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: "${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}"
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~> 1"
+          terraform_wrapper: false
+
+      - name: "Initialize Terraform"
+        run: terraform init -backend-config="bucket=${{ secrets.GCP_TFSTATE_BUCKET_NAME }}"
+
+      - name: "Plan Terraform Configuration"
+        env:
+          TF_VAR_gh_owner: ${{ github.event.repository.owner.name }}
+          TF_VAR_gh_repository: ${{ github.event.repository.name }}
+          TF_VAR_gcp_organization_id: ${{ secrets.GCP_ORGANIZATION_ID }}
+          TF_VAR_gcp_billing_account_id: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
+        run: terraform plan -out deployment.tfplan
+
+      - name: "Show Terraform Plan"
+        run: terraform show deployment.tfplan
+
+      # - name: "Apply Terraform Configuration"
+      #   run: terraform apply -auto-approve deployment.tfplan
