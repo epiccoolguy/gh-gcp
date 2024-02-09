@@ -108,5 +108,6 @@ module "gh_secrets" {
   gcp_billing_account_id         = var.gcp_billing_account_id
   gcp_project_id                 = module.project.project_id
   gcp_tfstate_bucket_name        = module.bucket.names["${var.gcp_tfstate_bucket_name}"]
+  gcp_service_account_email      = module.project.service_account_email
   gcp_workload_identity_provider = module.workload_identity.provider.name
 }

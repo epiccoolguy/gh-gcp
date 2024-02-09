@@ -22,6 +22,10 @@ variable "gcp_tfstate_bucket_name" {
   type = string
 }
 
+variable "gcp_service_account_email" {
+  type = string
+}
+
 variable "gcp_workload_identity_provider" {
   type = string
 }

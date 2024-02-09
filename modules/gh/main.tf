@@ -28,6 +28,12 @@ resource "github_actions_secret" "gcp_tfstate_bucket_name" {
   repository      = var.gh_repository
 }
 
+resource "github_actions_secret" "gcp_service_account_email" {
+  secret_name     = "GCP_SERVICE_ACCOUNT_EMAIL"
+  plaintext_value = var.gcp_service_account_email
+  repository      = var.gh_repository
+}
+
 resource "github_actions_secret" "gcp_workload_identity_provider" {
   secret_name     = "GCP_WORKLOAD_IDENTITY_PROVIDER"
   plaintext_value = var.gcp_workload_identity_provider
