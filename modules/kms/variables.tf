@@ -10,7 +10,7 @@ variable "location" {
   type = string
 }
 
-variable "owner" {
-  description = "IAM-style member e.g. `serviceAccount:acc@example.com`"
-  type        = string
+variable "owners" {
+  description = "IAM-style members e.g. `serviceAccount:acc@example.com`"
+  type        = list(string)
 }

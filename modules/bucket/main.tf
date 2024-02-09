@@ -4,7 +4,10 @@ module "kms" {
   project_id = var.project_id
   name       = var.name
   location   = var.location
-  owner      = var.admin
+  owners = [
+    var.admin,
+    "serviceAccount:service-${var.project_number}@gs-project-accounts.iam.gserviceaccount.com"
+  ]
 }
 
 module "bucket" {

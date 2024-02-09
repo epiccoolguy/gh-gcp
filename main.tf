@@ -38,11 +38,12 @@ module "project" {
 module "bucket" {
   source = "./modules/bucket"
 
-  project_id    = module.project.project_id
-  name          = var.gcp_tfstate_bucket_name
-  location      = var.gcp_location
-  storage_class = "STANDARD"
-  admin         = "serviceAccount:${module.project.service_account_email}"
+  project_id     = module.project.project_id
+  project_number = module.project.project_number
+  name           = var.gcp_tfstate_bucket_name
+  location       = var.gcp_location
+  storage_class  = "STANDARD"
+  admin          = "serviceAccount:${module.project.service_account_email}"
 }
 
 module "workload_identity" {

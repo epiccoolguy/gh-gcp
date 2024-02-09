@@ -7,5 +7,5 @@ module "kms" {
   keys                = [var.name]
   key_rotation_period = "86400s"
   set_owners_for      = [var.name]
-  owners              = [var.owner]
+  owners              = [join(",", var.owners)]
 }
