@@ -64,7 +64,7 @@ module "folder_gh_owner_iam_bindings" {
   source  = "terraform-google-modules/iam/google//modules/folders_iam"
   version = "~> 7.7.1"
 
-  folders = [module.folder_gh_owner.id]
+  folders = [module.folder_gh.id, module.folder_gh_owner.id]
   bindings = {
     "roles/owner" = [
       "serviceAccount:${module.project.service_account_email}"
