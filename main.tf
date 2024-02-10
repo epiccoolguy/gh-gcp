@@ -5,21 +5,24 @@ locals {
 }
 
 module "folder_gh" {
-  source = "terraform-google-modules/folders/google"
+  source  = "terraform-google-modules/folders/google"
+  version = "~> 4.0.1"
 
   names  = [local.gcp_root_folder_name]
   parent = "organizations/${var.gcp_organization_id}"
 }
 
 module "folder_gh_owner" {
-  source = "terraform-google-modules/folders/google"
+  source  = "terraform-google-modules/folders/google"
+  version = "~> 4.0.1"
 
   names  = [var.gh_owner]
   parent = module.folder_gh.id
 }
 
 module "project" {
-  source = "terraform-google-modules/project-factory/google"
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 14.4.0"
 
   name              = var.gh_repository
   random_project_id = true
@@ -58,7 +61,8 @@ module "workload_identity" {
 }
 
 module "folder_gh_owner_iam_bindings" {
-  source = "terraform-google-modules/iam/google//modules/folders_iam"
+  source  = "terraform-google-modules/iam/google//modules/folders_iam"
+  version = "~> 7.7.1"
 
   folders = [module.folder_gh_owner.id]
   bindings = {
@@ -77,7 +81,8 @@ module "folder_gh_owner_iam_bindings" {
 }
 
 module "billing_account_iam_bindings" {
-  source = "terraform-google-modules/iam/google//modules/billing_accounts_iam"
+  source  = "terraform-google-modules/iam/google//modules/billing_accounts_iam"
+  version = "~> 7.7.1"
 
   billing_account_ids = [var.gcp_billing_account_id]
   bindings = {
@@ -88,7 +93,8 @@ module "billing_account_iam_bindings" {
 }
 
 module "workload_identity_iam_bindings" {
-  source = "terraform-google-modules/iam/google//modules/service_accounts_iam"
+  source  = "terraform-google-modules/iam/google//modules/service_accounts_iam"
+  version = "~> 7.7.1"
 
   project          = module.project.project_id
   service_accounts = [module.project.service_account_email]

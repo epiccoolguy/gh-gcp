@@ -11,7 +11,8 @@ module "kms" {
 }
 
 module "bucket" {
-  source = "terraform-google-modules/cloud-storage/google"
+  source  = "terraform-google-modules/cloud-storage/google"
+  version = "~> 5.0.0"
 
   project_id       = var.project_id
   location         = var.location

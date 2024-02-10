@@ -2,7 +2,8 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/hashicorp/google" {
-  version = "5.15.0"
+  version     = "5.15.0"
+  constraints = ">= 3.43.0, >= 3.45.0, >= 3.50.0, >= 3.53.0, >= 4.28.0, >= 4.46.0, ~> 5.15.0, < 6.0.0"
   hashes = [
     "h1:pqd1xiQWI00Q0OOr5yAyYUHxREMkEVMNvvBLbpS8kHk=",
     "zh:08cf2452888e9a8a0c853f01add35f790d3db42570e5c3743c4603333c347b48",
@@ -61,7 +62,8 @@ provider "registry.terraform.io/hashicorp/null" {
 }
 
 provider "registry.terraform.io/hashicorp/random" {
-  version = "3.6.0"
+  version     = "3.6.0"
+  constraints = ">= 2.1.0, >= 2.2.0, >= 3.0.0, ~> 3.6.0"
   hashes = [
     "h1:I8MBeauYA8J8yheLJ8oSMWqB0kovn16dF/wKZ1QTdkk=",
     "zh:03360ed3ecd31e8c5dac9c95fe0858be50f3e9a0d0c654b5e504109c2159287d",
@@ -100,7 +102,8 @@ provider "registry.terraform.io/hashicorp/time" {
 }
 
 provider "registry.terraform.io/integrations/github" {
-  version = "5.45.0"
+  version     = "5.45.0"
+  constraints = "~> 5.45.0"
   hashes = [
     "h1:sP/Er9osOsz4vhKZAul+GeV0c5XdvMblJBMiP+T5tWc=",
     "zh:2afb8ee5b847071e51d5a39bcad5cf466c4d22452450d37c44a5f9d2eb9879e5",
