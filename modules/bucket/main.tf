@@ -26,7 +26,6 @@ module "bucket" {
   encryption_key_names = {
     (var.name) = module.kms.keys["${var.name}"]
   }
-  bucket_admins = {
-    (var.name) = var.admin
-  }
+  set_admin_roles = true
+  admins          = [var.admin]
 }
