@@ -42,5 +42,5 @@ jobs:
       - name: "Show Terraform Plan"
         run: terraform show deployment.tfplan
 
-      # - name: "Apply Terraform Configuration"
-      #   run: terraform apply -auto-approve deployment.tfplan
+      - name: "Apply Terraform Configuration"
+        run: terraform apply -auto-approve deployment.tfplan
