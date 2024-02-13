@@ -36,6 +36,7 @@ module "project" {
     "cloudresourcemanager.googleapis.com",
     "cloudkms.googleapis.com",
     "cloudbilling.googleapis.com",
+    "storage.googleapis.com",
   ]
 }
 
