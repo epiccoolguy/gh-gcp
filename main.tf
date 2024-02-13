@@ -1,3 +1,7 @@
+provider "github" {
+  owner = var.gh_owner
+}
+
 locals {
   gcp_project_id_prefix                     = "gha-wif"
   gcp_root_folder_name                      = "Github"
