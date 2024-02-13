@@ -1,13 +1,14 @@
 module "kms" {
   source = "../kms"
+  providers = {
+    google-beta = google-beta
+  }
 
-  project_id = var.project_id
-  name       = var.name
-  location   = var.location
-  owners = [
-    var.admin,
-    "serviceAccount:service-${var.project_number}@gs-project-accounts.iam.gserviceaccount.com"
-  ]
+  project_id     = var.project_id
+  project_number = var.project_number
+  name           = var.name
+  location       = var.location
+  owner          = var.admin
 }
 
 module "bucket" {

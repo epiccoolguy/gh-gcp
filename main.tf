@@ -42,6 +42,9 @@ module "project" {
 
 module "bucket" {
   source = "./modules/bucket"
+  providers = {
+    google-beta = google-beta
+  }
 
   project_id     = module.project.project_id
   project_number = module.project.project_number
@@ -62,49 +65,40 @@ module "workload_identity" {
   attribute_condition  = local.gcp_workload_identity_attribute_condition
 }
 
-module "folder_gh_owner_iam_bindings" {
-  source  = "terraform-google-modules/iam/google//modules/folders_iam"
-  version = "~> 7.7.1"
-
-  folders = [module.folder_gh.id, module.folder_gh_owner.id]
-  bindings = {
-    "roles/owner" = [
-      "serviceAccount:${module.project.service_account_email}"
-    ],
-
-    "roles/resourcemanager.folderViewer" = [
-      "serviceAccount:${module.project.service_account_email}"
-    ],
-
-    "roles/resourcemanager.folderCreator" = [
-      "serviceAccount:${module.project.service_account_email}"
-    ],
-  }
+resource "google_folder_iam_member" "folder_gh_iam_binding_creator" {
+  folder = module.folder_gh.id
+  role   = "roles/resourcemanager.folderCreator"
+  member = "serviceAccount:${module.project.service_account_email}"
 }
 
-module "billing_account_iam_bindings" {
-  source  = "terraform-google-modules/iam/google//modules/billing_accounts_iam"
-  version = "~> 7.7.1"
-
-  billing_account_ids = [var.gcp_billing_account_id]
-  bindings = {
-    "roles/billing.user" = [
-      "serviceAccount:${module.project.service_account_email}"
-    ]
-  }
+resource "google_folder_iam_member" "folder_gh_owner_iam_binding_creator" {
+  folder = module.folder_gh_owner.id
+  role   = "roles/resourcemanager.folderCreator"
+  member = "serviceAccount:${module.project.service_account_email}"
 }
 
-module "workload_identity_iam_bindings" {
-  source  = "terraform-google-modules/iam/google//modules/service_accounts_iam"
-  version = "~> 7.7.1"
+resource "google_folder_iam_member" "folder_gh_iam_binding_editor" {
+  folder = module.folder_gh.id
+  role   = "roles/resourcemanager.folderEditor"
+  member = "serviceAccount:${module.project.service_account_email}"
+}
 
-  project          = module.project.project_id
-  service_accounts = [module.project.service_account_email]
-  bindings = {
-    "roles/iam.workloadIdentityUser" = [
-      "principalSet://iam.googleapis.com/${module.workload_identity.pool.name}/attribute.repository/${var.gh_owner}/${var.gh_repository}"
-    ]
-  }
+resource "google_folder_iam_member" "folder_gh_owner_iam_binding_editor" {
+  folder = module.folder_gh_owner.id
+  role   = "roles/resourcemanager.folderEditor"
+  member = "serviceAccount:${module.project.service_account_email}"
+}
+
+resource "google_billing_account_iam_member" "billing_account_iam_binding" {
+  billing_account_id = var.gcp_billing_account_id
+  role               = "roles/billing.user"
+  member             = "serviceAccount:${module.project.service_account_email}"
+}
+
+resource "google_service_account_iam_member" "workload_identity_iam_binding" {
+  service_account_id = module.project.service_account_name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "principalSet://iam.googleapis.com/${module.workload_identity.pool.name}/attribute.repository/${var.gh_owner}/${var.gh_repository}"
 }
 
 module "gh_secrets" {
