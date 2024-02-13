@@ -37,6 +37,7 @@ module "project" {
     "cloudkms.googleapis.com",
     "cloudbilling.googleapis.com",
     "storage.googleapis.com",
+    "serviceusage.googleapis.com"
   ]
 }
 
@@ -65,28 +66,40 @@ module "workload_identity" {
   attribute_condition  = local.gcp_workload_identity_attribute_condition
 }
 
-resource "google_folder_iam_member" "folder_gh_iam_binding_creator" {
+resource "google_folder_iam_member" "folder_gh_owner" {
   folder = module.folder_gh.id
-  role   = "roles/resourcemanager.folderCreator"
+  role   = "roles/owner"
   member = "serviceAccount:${module.project.service_account_email}"
 }
 
-resource "google_folder_iam_member" "folder_gh_owner_iam_binding_creator" {
+resource "google_folder_iam_member" "folder_gh_owner_owner" {
   folder = module.folder_gh_owner.id
-  role   = "roles/resourcemanager.folderCreator"
+  role   = "roles/owner"
   member = "serviceAccount:${module.project.service_account_email}"
 }
 
-resource "google_folder_iam_member" "folder_gh_iam_binding_editor" {
+resource "google_folder_iam_member" "folder_gh_folder_editor" {
   folder = module.folder_gh.id
   role   = "roles/resourcemanager.folderEditor"
   member = "serviceAccount:${module.project.service_account_email}"
 }
 
-resource "google_folder_iam_member" "folder_gh_owner_iam_binding_editor" {
+resource "google_folder_iam_member" "folder_gh_owner_folder_editor" {
   folder = module.folder_gh_owner.id
   role   = "roles/resourcemanager.folderEditor"
   member = "serviceAccount:${module.project.service_account_email}"
+}
+
+resource "google_folder_iam_member" "folder_gh_project_creator" {
+  folder = module.folder_gh.id
+  role   = "roles/resourcemanager.projectCreator"
+  member = "serviceAccount:${module.project.service_account_email}"
+}
+
+resource "google_project_iam_member" "project" {
+  project = module.project.project_id
+  role    = "roles/owner"
+  member  = "serviceAccount:${module.project.service_account_email}"
 }
 
 resource "google_billing_account_iam_member" "billing_account_iam_binding" {
