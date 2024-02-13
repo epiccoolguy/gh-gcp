@@ -39,8 +39,5 @@ jobs:
           TF_VAR_gcp_billing_account_id: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
         run: terraform plan -out deployment.tfplan
 
-      - name: "Show Terraform Plan"
-        run: terraform show deployment.tfplan
-
       - name: "Apply Terraform Configuration"
         run: terraform apply -auto-approve deployment.tfplan
