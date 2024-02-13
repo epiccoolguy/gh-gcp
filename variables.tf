@@ -8,6 +8,11 @@ variable "gh_repository" {
   default = "gh-gcp"
 }
 
+variable "gh_token" {
+  type    = string
+  default = ""
+}
+
 variable "gcp_organization_id" {
   type = string
 }
