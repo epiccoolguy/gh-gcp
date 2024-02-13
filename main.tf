@@ -34,7 +34,8 @@ module "project" {
     "iam.googleapis.com",
     "iamcredentials.googleapis.com",
     "cloudresourcemanager.googleapis.com",
-    "cloudkms.googleapis.com"
+    "cloudkms.googleapis.com",
+    "cloudbilling.googleapis.com",
   ]
 }
 
