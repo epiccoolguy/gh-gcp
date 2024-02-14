@@ -35,7 +35,7 @@ jobs:
         env:
           TF_VAR_gh_owner: ${{ github.event.repository.owner.name }}
           TF_VAR_gh_repository: ${{ github.event.repository.name }}
-          TF_VAR_gh_token: ${{ secrets.GITHUB_TOKEN }}
+          TF_VAR_gh_token: ${{ secrets.GH_SECRETS_TOKEN }}
           TF_VAR_gcp_organization_id: ${{ secrets.GCP_ORGANIZATION_ID }}
           TF_VAR_gcp_billing_account_id: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
         run: terraform plan -out deployment.tfplan
